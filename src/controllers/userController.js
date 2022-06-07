@@ -1,39 +1,37 @@
-const UserModel = require("../models/userModel")
+const bookModel = require("../models/userModel")
+const authorModel = require("../models/authorModel")
+
 
 const createBook = async function (req, res) {
     let data = req.body
-    let savedBook = await UserModel.create(data)
+    let savedBook = await bookModel.create(data)
     res.send({ msg: savedBook })
 }
 
-const getBooksData = async function (req, res) {
-    let allBooks = await UserModel.find().select({ bookName: 1, authorName: 1, _id: 0 })
-    res.send({ msg: allBooks })
+const createAuthor = async function (req, res) {
+    let data = req.body
+    let savedBook = await authorModel.create(data)
+    res.send({ msg: savedBook })
 }
-const getBooksInYear = async function (req, res) {
-    let Year = req.body.year
-    let allBooks = await UserModel.find({ year: { $eq: Year } })
-    res.send({ msg: allBooks })
+const getChetanBook = async function (req, res) {
+    let list = await authorModel.findOne({authorName:"Chetan bagath"})
+    let id = list.author_id
+    let bookList = await bookModel.find({author_id:id})
+    res.send({ msg: bookList })
 }
-const getParticularBooks = async function (req, res) {
-    let data = (req.body)
-    let allBooks = await UserModel.find(data)
-    res.send({ msg: allBooks })
-}
-const getXINRBooks = async function (req, res) {
+const updatedPrice =async function (req, res) {
+     let author = await bookModel.findOneAndUpdate({bookName:"Two states"},{$set:{price:100}},{new:true})
+     let id = author.author_id
+     let Uprice = author.price
+     let authorN = await authorModel.findOne({author_id:id})
 
-    let allBooks = await UserModel.find({ 'prices.Indianprice': { $in: [100, 200, 500] } })
-    res.send({ msg: allBooks })
+     res.send({ msg: [authorN.authorName,Uprice] })
+ }
+const reqPriceRange =async function (req, res) {
+   let priceRangeBooks =await bookModel.find( {price : { $gte: 50, $lte: 100}}  ).select({author_id:1,_id:0})
 }
-const getRandomBooks = async function (req, res) {
-
-    let allBooks = await UserModel.find({ $or: [{ stockAvailable: true }, { totalPages: { $gt: 500 } }] })
-    res.send({ msg: allBooks })
-}
-
 module.exports.createBook = createBook
-module.exports.getBooksData = getBooksData
-module.exports.getBooksInYear = getBooksInYear
-module.exports.getParticularBooks = getParticularBooks
-module.exports.getXINRBooks = getXINRBooks
-module.exports.getRandomBooks = getRandomBooks
+module.exports.createAuthor = createAuthor
+module.exports.getChetanBook=getChetanBook
+module.exports.updatedPrice=updatedPrice
+module.exports.reqPriceRange = reqPriceRange
