@@ -11,7 +11,7 @@ router.get("/bookList", UserController.getBooksData)
 
 router.post("/getBooksInYear", UserController.getBooksInYear)
 
-//router.post("/getParticularBooks", UserController.getParticularBooks)
+router.post("/getParticularBooks", UserController.getParticularBooks)
 
 router.get("/getXINRBooks", UserController.getXINRBooks)
 

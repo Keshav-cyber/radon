@@ -15,13 +15,13 @@ const getBooksInYear = async function (req, res) {
     let allBooks= await UserModel.find({year:{$eq:Year}})
     res.send({msg: allBooks})
 }
-// const getParticularBooks = async function (req, res) {
-//     let data = req.body
-//    const {a} = data
-//    console.log(a)
-//     let allBooks= await UserModel.find()
-//     res.send({msg: allBooks})
-// }
+  const getParticularBooks = async function (req, res) {
+       let data = (req.body)
+     
+      
+       let allBooks= await UserModel.find(data)
+       res.send({msg: allBooks})
+  }
 const getXINRBooks = async function (req, res) {
     
      let allBooks= await UserModel.find({'prices.Indianprice': {$in:[100,200,500]}})
@@ -29,13 +29,13 @@ const getXINRBooks = async function (req, res) {
  }
 const getRandomBooks = async function (req, res) {
     
-    let allBooks= await UserModel.find({stockAvailable:true,totalPages:{$gt:500}})
+    let allBooks= await UserModel.find({$or:[{stockAvailable:true},{totalPages:{$gt:500}}]})
     res.send({msg: allBooks})
 }
 
 module.exports.createBook = createBook
 module.exports.getBooksData= getBooksData
 module.exports.getBooksInYear=getBooksInYear
-//module.exports.getParticularBooks=getParticularBooks
+module.exports.getParticularBooks=getParticularBooks
 module.exports.getXINRBooks=getXINRBooks
 module.exports.getRandomBooks =getRandomBooks
