@@ -28,10 +28,37 @@ const updatedPrice =async function (req, res) {
      res.send({ msg: [authorN.authorName,Uprice] })
  }
 const reqPriceRange =async function (req, res) {
-   let priceRangeBooks =await bookModel.find( {price : { $gte: 50, $lte: 100}}  ).select({author_id:1,_id:0})
+   let data = await bookModel.find( {price : { $gte: 50, $lte: 100}}  ).select({author_id:1,_id:0})
+   let result = []
+   for(let i = 0;i<data.length;i++){
+    let rest = await authorModel.findOne(data[i]).select({authorName:1,_id:0})
+      result.push(rest)
+   }
+   res.send(result)
+
 }
+const booksByAuthorID = async function (req, res) {
+   let author_id= req.params.authorid
+   let bookList = await bookModel.find({author_id:author_id}).select({bookName:1,_id:0})
+
+      res.send(bookList)
+}
+    
+const authorByAge = async function (req, res) {
+    
+    let authors = await authorModel.find({age:{$gt:50}}).select({authorName:1,age:1,author_id:1,_id:0})
+        let arr= []
+     for(let i= 0 ;i<authors.length;i++){
+         let rating = await bookModel.find()
+     }
+
+       res.send(arr)
+ }
+
 module.exports.createBook = createBook
 module.exports.createAuthor = createAuthor
 module.exports.getChetanBook=getChetanBook
 module.exports.updatedPrice=updatedPrice
 module.exports.reqPriceRange = reqPriceRange
+module.exports.booksByAuthorID = booksByAuthorID
+module.exports.authorByAge= authorByAge

@@ -14,6 +14,11 @@ router.get("/getChetanBook", UserController.getChetanBook)
 router.get("/twoStateAuthor", UserController.updatedPrice)
 
 router.get("/reqPriceRange", UserController.reqPriceRange)
+
+router.get("/books-by-authorid/:authorid", UserController.booksByAuthorID)
+
+router.get("/authorByAge", UserController.authorByAge)
+
 module.exports = router;
 
 
