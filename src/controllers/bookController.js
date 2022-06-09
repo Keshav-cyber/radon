@@ -1,48 +1,51 @@
 const authorModel = require("../models/authorModel")
-const bookModel= require("../models/bookModel")
+const bookModel = require("../models/bookModel")
 const PubModel = require("../models/publisherModel")
 
-const createBook= async function (req, res) {
+const createBook = async function (req, res) {
     let data = req.body
-    if(!data.author){
+    if (!data.author) {
         res.send("authorid is required")
     }
-    else if (!data.publisher){
+    else if (!data.publisher) {
         res.send("publisherid is required")
     }
-     else {
+    else {
 
         let authorid = await authorModel.findById(data.author)
         let publisherid = await PubModel.findById(data.publisher)
-        if(!authorid && !publisherid){
+        if (!authorid && !publisherid) {
             res.send("not present")
         }
-        else{
-           let createdBook = await bookModel.create(data)
-           res.send({msg:createdBook})
+        else {
+            let createdBook = await bookModel.create(data)
+            res.send({ msg: createdBook })
         }
     }
 
 }
 
-const getAllBookDetails= async function (req, res) {
-    
+const getAllBookDetails = async function (req, res) {
+
     let books = await bookModel.find().populate('author publisher')
 
-res.send(books)
+    res.send(books)
 
 }
 
 
 
-   
 
-const getBooksWithAuthorDetails = async function (req, res) {
-    let specificBook = await bookModel.find().populate('author_id')
-    res.send({data: specificBook})
+
+
+
+const updateDetails = async function (req, res) {
+    
+    let reqBook = await bookModel.find().populate('author publisher').updateMany({'publisher.Name':"Penguin"},{$set:{isHardCover:true}})
+    res.send({ data: reqBook })
 
 }
 
-module.exports.createBook= createBook
-module.exports.getAllBookDetails= getAllBookDetails
-module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
+module.exports.createBook = createBook
+module.exports.getAllBookDetails = getAllBookDetails
+module.exports.updateDetails = updateDetails
