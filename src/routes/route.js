@@ -10,7 +10,7 @@ router.post("/users", userController.createUser  )
 
 router.post("/login", userController.loginUser)
 
-router.post("/users/:userId/posts", userController.postMessage)
+router.post("/users/:userId/posts",authenticate,authorization, userController.postMessage)
 
 router.get("/users/:userId",authenticate,authorization ,userController.getUserData)
 
